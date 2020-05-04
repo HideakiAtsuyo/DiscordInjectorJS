@@ -1,11 +1,13 @@
-const url = 'https://pastebin.com/raw/BwutnZ06';
-const axios = require("axios");
-const child_process = require("child_process");
-const process = require("process");
-const appdata = process.platform === "win32" ? process.env.APPDATA : process.platform === "linux" ? process.env['XDG_CONFIG_HOME'] : undefined;
-const regex = /((\d+)(\.)?)+/;
-const fs = require('fs');
-const { join } = require('path');
+const url = 'https://pastebin.com/raw/BwutnZ06',
+      axios = require("axios"),
+      child_process = require("child_process"),
+      process = require("process"),
+      appdata = process.platform === "win32" ? process.env.APPDATA : process.platform === "linux" ? process.env['XDG_CONFIG_HOME'] : undefined,
+      regex = /((\d+)(\.)?)+/,
+      fs = require('fs'),
+      { join } = require('path'),
+      PluginsPath = appdata + "/Discord_Bot/Plugins",
+      ThemesPath = appdata + "/Discord_Bot/Themes";
 
 (async function () {
 
@@ -25,12 +27,10 @@ const { join } = require('path');
         child_process.execSync(`asar pack ${path.substring(0, path.length - 9) + "/_extracted"} ${path}`);
         fs.rmdirSync(path.substring(0, path.length - 9) + "\\_extracted", {recursive:true});
         fs.mkdir(appdata + "/Discord_Bot", {recursive: true}, (err) => {
-            if (err) return console.error(err);
-            fs.mkdirSync(appdata + "/Discord_Bot/Plugins");
-            fs.mkdirSync(appdata + "/Discord_Bot/Themes");
-
+            if (err) return console.error(err);    
+            if (fs.existsSync(PluginsPath)){console.log("The Plugins Folder already exists");} else {fs.mkdirSync(PluginsPath);console.log("Plugin Folder created with success");};
+            if (fs.existsSync(ThemesPath)){console.log("The Themes Folder already exists");} else {fs.mkdirSync(ThemesPath);console.log("Themes Folder created with success");};
         });
-        console.log("Created the directory Discord_Bot in your appdata. You  can put your js files in PLUGINS executed on discord load. To load all new plugins please refresh discord doing ctrl + r");
+        console.log("Created the directory Discord_Bot, he contain Plugin and Themes Folders in your appdata. You can put your js files in PLUGINS and CSS files in THEMES, all are executed on discord load. To load all new plugins please refresh discord doing `ctrl + r`");
     }
-
 })();

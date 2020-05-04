@@ -4,9 +4,8 @@ cls
 color 0
 :question
 echo 1) Install modules
-echo 2) Launch bot(if he crash you have to relaunch it)
-echo 3) Launch bot(if he crash he relaunch itself)
-echo 4) Exit
+echo 2) Launch Injector
+echo 3) Exit
 set /p choix=What do u want? (1/2/3):
  
 if /I "%choix%"=="1" (goto :Install)

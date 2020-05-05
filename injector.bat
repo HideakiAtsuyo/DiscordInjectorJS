@@ -10,13 +10,12 @@ set /p choix=What do u want? (1/2/3):
  
 if /I "%choix%"=="1" (goto :Install)
 if /I "%choix%"=="2" (goto :Launch)
-if /I "%choix%"=="4" (goto :End)
+if /I "%choix%"=="3" (goto :End)
 goto question
  
 :Install
 Title Discord Injector - Installation
 cls
-echo.
 npm i
 echo Finished!
 goto question
@@ -24,11 +23,13 @@ goto question
 :Launch
 Title Discord Injector - Injector
 cls
-echo.
-echo Launch the injector..
-node index.js
-echo.
-echo Injection finished!
+echo 1) Discord Stable
+echo 2) Discord Canary
+echo 3) PTB(Later)
+set /p choix=What do u want? (1/2/3):
+if /I "%choix%"=="1" (node index.js Discord)
+if /I "%choix%"=="2" (node index.js Canary)
+if /I "%choix%"=="3" (node index.js PTB)
 pause
 goto end
 

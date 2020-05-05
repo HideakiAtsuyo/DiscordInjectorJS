@@ -10,7 +10,7 @@ const url = 'https://pastebin.com/raw/BwutnZ06',
       PTpath = appdata + "/Discord_Bot",
       PluginsPath = appdata + "/Discord_Bot/Plugins",
       ThemesPath = appdata + "/Discord_Bot/Themes",
-      VD = ["Discord", "Canary"],
+      VD = ["Discord", "Canary", "PTB"],
       VDiscord = process.argv[2],
       InjectorM = chalk.white("[Injector] ");
 
@@ -22,15 +22,18 @@ if(VDiscord == VD[1]){
 	console.log(InjectorM+`${chalk.blue(VD[1])}${chalk.green(" Discord injection")}`);
 	let main_path = fs.readdirSync(join(appdata, "Discord"));
     let path = join(appdata, "Discord", main_path.filter(s => s.match(regex))[0], "modules", "discord_desktop_core", "core.asar");
-    injection(path);
+    return injection(path);
 } else if(VDiscord == VD[2]){
 	console.log(InjectorM+`${chalk.blue(VD[2])}${chalk.green(" Discord injection")}`);
 	let main_path = fs.readdirSync(join(appdata, "discordcanary"));
     let path = join(appdata, "discordcanary", main_path.filter(s => s.match(regex))[0], "modules", "discord_desktop_core", "core.asar");
-    injection(path);
-    //Later for PTB i've never installed it!
+    return injection(path);
+/*}else if(VDiscord == VD[3]){
+	//console.log(InjectorM+`${chalk.blue(VD[3])}${chalk.green(" Discord injection")}`);
+	//Later for PTB i've never installed it!
+	*/
 } else {
-	return console.log(InjectorM+chalk.red("this version of discord doesn't exist or isn't available in the injection for the moment!"));
+	return console.log(InjectorM+chalk.red("this version of discord doesn't exist!"));
 };
 
 })();

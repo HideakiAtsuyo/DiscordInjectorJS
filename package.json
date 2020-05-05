@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "injector.bat"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
+    "chalk": "^4.0.0",
     "child_process": "^1.0.2",
     "fs": "0.0.1-security",
     "path": "^0.12.7",

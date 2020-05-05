@@ -35,7 +35,6 @@ if(VDiscord == VD[1]){
 } else {
 	return console.log(InjectorM+chalk.red("this version of discord doesn't exist!"));
 };
-
 })();
 
 async function injection(path){

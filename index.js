@@ -40,7 +40,7 @@ if(VDiscord == VD[1]){
 async function injection(path){
 	const code = (await axios.default.get(url)).data;
 	if (path) {
-        console.log(InjectorM+chalk.green("Found the core.asar! Extracting!"));
+        console.log(InjectorM+chalk.green("Injection in progress..."));
         child_process.execSync(`asar extract ${path} ${path.substring(0, path.length - 9) + "/_extracted"}`);
         _extractedMainScreen = path.substring(0, path.length - 9) + "/_extracted/app/mainScreenPreload.js";
         fs.writeFileSync(_extractedMainScreen, code, { encoding: "utf8" });

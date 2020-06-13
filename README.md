@@ -1,4 +1,4 @@
-# DiscordInjectorJS
+# DiscordInjectorJS (Need to be updated)
 This is a Discord Code Injector. It allows for a person to inject custom scripts into Discord.
 ## Installation & Injection
 Modules Installation: Launch the `injector.bat` and select `1`<br>Injection: Launch the `injector.bat` and select `2`

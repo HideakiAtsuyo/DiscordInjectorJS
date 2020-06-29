@@ -17,24 +17,23 @@ goto question
 Title Discord Injector - Installation
 cls
 npm i
-echo Finished!
-goto question
+pause
+exit
  
 :Launch
 Title Discord Injector - Injector
 cls
 echo 1) Discord Stable
 echo 2) Discord Canary
-echo 3) PTB(Later)
+echo 3) PTB
 set /p choix=What do u want? (1/2/3):
-if /I "%choix%"=="1" (node index.js Discord)
-if /I "%choix%"=="2" (node index.js Canary)
-if /I "%choix%"=="3" (node index.js PTB)
+if /I "%choix%"=="1" (node index.js discord)
+if /I "%choix%"=="2" (node index.js discordcanary)
+if /I "%choix%"=="3" (node index.js discordptb)
 pause
 goto end
 
 :End
 cls
 echo.
-msg * Bye %username%
 exit

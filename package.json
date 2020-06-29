@@ -1,20 +1,23 @@
 {
-  "name": "InjectionCode",
+  "name": "NotAInjector",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "injector.bat"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
     "chalk": "^4.0.0",
     "child_process": "^1.0.2",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
+    "phin": "^3.5.0",
     "process": "^0.11.10"
+  },
+  "devDependencies": {
+    "asar": "3.0.3"
   }
 }

@@ -1,44 +1,27 @@
-'use strict';
-const ipcRenderer = require('./discord_native/ipc');
-const _fs = require('fs')
-const TRACK_ANALYTICS_EVENT = 'TRACK_ANALYTICS_EVENT';
-const TRACK_ANALYTICS_EVENT_COMMIT = 'TRACK_ANALYTICS_EVENT_COMMIT';
-ipcRenderer.on(TRACK_ANALYTICS_EVENT, e => {
-    e.sender.send(TRACK_ANALYTICS_EVENT_COMMIT);
-});
-const DiscordNative = {
-    isRenderer: process.type === 'renderer',
-    nativeModules: require('./discord_native/nativeModules'),
-    globals: require('./discord_native/globals'),
-    process: require('./discord_native/process'),
-    os: require('./discord_native/os'),
-    remoteApp: require('./discord_native/remoteApp'),
-    clipboard: require('./discord_native/clipboard'),
-    ipc: ipcRenderer,
-    gpuSettings: require('./discord_native/gpuSettings'),
-    window: require('./discord_native/window'),
-    remotePowerMonitor: require('./discord_native/remotePowerMonitor'),
-    spellCheck: require('./discord_native/spellCheck'),
-    crashReporter: require('./discord_native/crashReporter'),
-    desktopCapture: require('./discord_native/desktopCapture'),
-    fileManager: require('./discord_native/fileManager'),
-    processUtils: require('./discord_native/processUtils'),
-    powerSaveBlocker: require('./discord_native/powerSaveBlocker'),
-    http: require('./discord_native/http'),
-    accessibility: require('./discord_native/accessibility')
-};
-const _setImmediate = setImmediate;
-const _clearImmediate = clearImmediate;
-const _path = require("path");
+// ======================================================== INJECTION ============================================================
+const { join } = require("path");
 const _electron = require('electron');
+const _fs = require('fs');
+const _req = require ('request');
 
 class Injector {
     constructor() {
         this.extensions_cache = null
         this.loaded = false;
+		this.path = "";
     }
-    _getExtensionsDir() {
-        return _path.join(_electron.remote.app.getPath('appData'), "Discord_Bot");
+    getSite(type, url) {
+        return new Promise((res, rej) => {
+            _req({url: url, method: type}, (err, result, body) => {
+                if (err) rej(err);
+                res(body);
+            });
+        })
+    }
+    async _getExtensionsDir() {
+		let path = await DiscordNative.remoteApp.getPath("appData");
+		this.path = join(path, "Discord_Bot");
+        return this.path;
     };
     _getExtensionsDirectories() {
         if (this.extensions_cache === null) {
@@ -55,48 +38,49 @@ class Injector {
     }
 };
 
+console.warn('%c[Injection]', 'color: aqua', "Waiting to load...");
+
 const Injection = new Injector();
+globalThis.Injector = Injection;
 
-process.once('loaded', () => {
-    global.DiscordNative = DiscordNative;
-    global.setImmediate = _setImmediate;
-    global.clearImmediate = _clearImmediate;
-    global.Injector = Injection;
-    console.clear();
-
-});
-console.clear();
-console.warn("[Injector] Waiting to load...");
-
-var checkExist = setInterval(() => {
+var checkExist = setInterval( async () => {
     if (Injection.loaded === true) return;
-    console.clear();
-    console.info('[Injection] Injecting extensions');
-    const injections = Injection._getExtensionsDir();
 
-    for (let LOCATION of Injection._getExtensionsDirectories()) {
-        const files = _path.join(injections, LOCATION);
-        for (let file of _fs.readdirSync(files)) {
-            if (file.includes(".js")) {
-                _fs.readFile(_path.join(files, file), 'utf8', (err, contents) => {
-                    eval(contents);
-                });
-            } else if (file.includes(".css")) {
-                let name = file.toString().split('.')[0];
-                _fs.readFile(_path.join(files, file), "utf8", (err, contents) => {
+    const injections = await Injection._getExtensionsDir();
+    console.info('%c[Injection]', 'color: aqua', 'Injecting extensions');
+
+    for (let folder of _fs.readdirSync(injections)) {
+        let Seperate = join(injections, folder);
+        for (let fiolds of _fs.readdirSync(Seperate)) {
+            let newPath = join(Seperate, fiolds);
+            if (_fs.lstatSync(newPath).isDirectory()) {
+                if (fiolds === "Commands") { continue; }
+                let files = _fs.readdirSync(newPath);
+                for (let file of files) {
+                    if (file.endsWith(".js")) {
+                        _fs.readFile(join(newPath, file), { encoding: "utf8" }, (err, contents) => {
+                            eval(contents);
+                        })
+                    }
+                }
+            }
+
+            if (fiolds.endsWith(".css")) {
+                let name = fiolds.toString().split(".")[0];
+                _fs.readFile(join(newPath), "utf8", (err, contents) => {
                     eval(`
                     if (!document.getElementById(name)) {
-                        const style = document.createElement('style');
+                        const style = document.createElement("style");
                         style.id = name;
                         style.innerHTML = contents;
                         document.head.appendChild(style);
-                    };
-                    `);
-                });
+                    }
+                `)
+                })
+                continue;
             }
         }
     }
     Injection.loaded = true;
-    console.info('[Injection] The extensions have been loaded.');
-
+    console.info('%c[Injection]', 'color: aqua', 'The extensions have been loaded.');
 }, 1000);

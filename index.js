@@ -1,16 +1,15 @@
-
-const phin = require("phin");
-const child_process = require("child_process");
-const process = require("process");
-const fs = require('fs');
-const { join } = require('path');
-const chalk = require('chalk');
-const appdata = process.platform === "win32" ? process.env.APPDATA : process.platform === "linux" ? process.env['XDG_CONFIG_HOME'] : undefined;
-const regex = /((\d+)(\.)?)+/;
-const versions = ['discordcanary', 'discord', 'discordptb'];
-const url = "https://pastebin.com/raw/Xs48V4Y1";
+const phin = require("phin"),
+child_process = require("child_process"),
+process = require("process"),
+fs = require('fs'),
+{ join } = require('path'),
+chalk = require('chalk'),
+appdata = process.platform === "win32" ? process.env.APPDATA : process.platform === "linux" ? process.env['XDG_CONFIG_HOME'] : undefined,
+versions = ['discordcanary', 'discord', 'discordptb'],
+url = "https://pastebin.com/raw/Xs48V4Y1",
+injectorr = chalk.redBright("[INJECTOR]");
 let type = process.argv[2];
-const injectorr = chalk.redBright("[INJECTOR]");
+const regex = /((\d+)(\.)?)+/;
 
 (async function () {
     if (!type) return console.log(`${injectorr} Please add a Discord Version\nList:\n- discord\n- discordcanary\n- discordptb`);

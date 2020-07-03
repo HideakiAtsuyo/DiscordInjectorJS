@@ -16,7 +16,10 @@ goto question
 :Install
 Title Discord Injector - Installation
 cls
+echo Installation 1 of 2
 npm i
+echo Installation 2 of 2(asar)
+npm i -g asar
 pause
 exit
  

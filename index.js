@@ -22,7 +22,7 @@ const regex = /((\d+)(\.)?)+/;
     let pathToVersion = fs.readdirSync(join(appdata, type.replace("--", "")));
     let pathToCore = join(appdata, type.replace("--", ""), pathToVersion.filter(s => s.match(regex))[0], "modules", "discord_desktop_core\\");
     if (fs.lstatSync(pathToCore).isDirectory()) {
-        console.log(`${injectorr} Found core.asar file.`);
+        console.log(`${injectorr} ${chalk.blue("Patching")} ${chalk.green(type.replace("--", ""))}...`);
         child_process.execSync(`asar extract ${join(pathToCore, "core.asar")} ${join(pathToCore, "_extracted")}`);
         fs.appendFileSync(join(pathToCore, "_extracted/app/mainScreenPreload.js"), injection, { encoding: "utf8" });
         child_process.execSync(`Del /f ${join(pathToCore, "core.asar")}`);
